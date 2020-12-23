@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <style>
+            * { box-sizing: border-box; }
+            body{
+                display: flex;
+                width: 100vw;
+                height: 100vh;
+                justify-content: center;
+                align-items: center;
+            }
+            .scene {
+              width: 200px;
+              height: 200px;
+              margin: 80px;
+              perspective: 400px;
+            }
+            .cube {
+              width: 200px;
+              height: 200px;
+              position: relative;
+              transform-style: preserve-3d;
+              transform: translateZ(-100px);
+              transition: transform 1s;
+            }
+            .cube>div {
+              position: absolute;
+              width: 200px;
+              height: 200px;
+              
+              line-height: 200px;
+              font-size: 40px;
+              font-weight: bold;
+              color: white;
+              text-align: center;
+            }
+            .front  { background: #b53737; transform: rotateY(  0deg) translateZ(100px);}
+            .right  { background: #333094; transform: rotateY( 90deg) translateZ(100px);}
+            .back   { background: #999999; transform: rotateY(180deg) translateZ(100px);}
+            .left   { background: #247560; transform: rotateY(-90deg) translateZ(100px);}
+            .top    { background: #1e5154; transform: rotateX( 90deg) translateZ(100px);}
+            .bottom { background: #253814; transform: rotateX(-90deg) translateZ(100px);}
+            
+            </style>
+    </head>
+    <body>
+        <div class="scene">
+            <div class="cube">
+                <div class="front">front</div>
+                <div class="back">back</div>
+                <div class="right">right</div>
+                <div class="left">left</div>
+                <div class="top">top</div>
+                <div class="bottom">bottom</div>
+            </div>
+        </div>
+        <script src="socket.io.min.js"></script>
+        <script>
+            const socket = io();
+            const cube = document.querySelector(".cube");
+            socket.on("data",(data)=>{
+                cube.style.transform = `translateZ(-100px) rotateX(${-1*data.x}rad) rotateY(${data.y}rad) `;
+            })
+        </script>
+    </body>
+</html>
